@@ -1,0 +1,12 @@
+Další možnosti procvičování regulárních výrazů:
+
+https://regexlearn.com/
+http://regexone.com/
+https://regex101.com/quiz
+https://www.regularnivyrazy.info/shrnuti-syntaxe.html
+https://developers.google.com/edu/python/regular-expressions
+https://www.kaggle.com/code/eliasdabbas/how-to-create-a-python-regex-to-extract-emoji
+https://www.kaggle.com/code/albeffe/regex-exercises-solutions/notebook
+https://github.com/learnbyexample/py_regular_expressions/tree/master/interactive_exercises
+https://regexcrossword.com -- krizovka :D
+https://jex.im/regulex/
