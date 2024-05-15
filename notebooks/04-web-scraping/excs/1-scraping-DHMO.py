@@ -1,21 +1,23 @@
-from requests_html import HTMLSession
+import requests
+from bs4 import BeautifulSoup
 
-"""
-Napište program, který bude pracovat se stránkou o DHMO na adrese https://apps.kodim.cz/python-data/dhmo.
-"""
-session = HTMLSession()
-stranka = session.get("https://apps.kodim.cz/python-data/dhmo")
+# Načtení HTML obsahu ze stránky
+response = requests.get("https://apps.kodim.cz/python-data/dhmo")
+soup = BeautifulSoup(response.text, 'html.parser')
 
-# Nechť program vypíše na výstup nadpisy všech sekcí (značka h2).
-# for nadpis in stranka.html.find("h2"):
-#     print(nadpis.text)
+# Výpis nadpisů všech sekcí (značka h2)
+h2_headings = soup.find_all('h2')
+for heading in h2_headings:
+    print(heading.text)
 
-# Nechť program vypíše na výstup cesty všech odkazů na stránce (značka a, atribut href).
-# for odkaz in stranka.html.find("a"):
-#     print(odkaz.attrs["href"])
+# Výpis cest všech odkazů na stránce (značka a, atribut href)
+links = soup.find_all('a')
+for link in links:
+    if 'href' in link.attrs:
+        print(link['href'])
 
-# # Nechť program vypíše na výstup cesty ke všem obrázkům na stránce (značka img, atribut src).
-for obrazek in stranka.html.find("img"):
-    print(obrazek.attrs["src"])
-
-# session.close()
+# Výpis cest ke všem obrázkům na stránce (značka img, atribut src)
+images = soup.find_all('img')
+for image in images:
+    if 'src' in image.attrs:
+        print(image['src'])
