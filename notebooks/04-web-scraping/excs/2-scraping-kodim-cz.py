@@ -1,34 +1,43 @@
-from requests_html import HTMLSession
+import requests
+from bs4 import BeautifulSoup
 
-# Create a session
-session = HTMLSession()
+# Vytvoření session
+session = requests.Session()
 
-# Load the webpage
-url = "https://kodim.cz"
+# Načtení webové stránky
+url = "https://kodim.cz/czechitas"
 response = session.get(url)
 
-# Find elements containing course names
-# It is assumed that the course names are in elements with a specific class
+# Vytvoření instance BeautifulSoup
+soup = BeautifulSoup(response.text, 'html.parser')
 
-sections = response.html.find(".styles_menu__SHkwc a")
+
+# Hledání elementů obsahujících názvy kurzů
+# Předpokládá se, že názvy kurzů jsou ve elementech se specifickou třídou
+sections = soup.select(".styles_courseCard__EMR1m")
 
 links = []
-# Print the names of sections
+# Vypsání názvů sekcí
 for section in sections:
-    # Append the href attribute (link) of each section to the links list
-    links.append(section.attrs["href"])
+    # Přidání atributu href (odkaz) každé sekce do seznamu links
+    if 'href' in section.attrs:
+        links.append(section['href'].replace('/czechitas', ''))
 print(links)
 
-# Iterate through each link in the links list
+# Iterace přes každý odkaz v seznamu links
 for link in links:
-    # Construct the URL for each section
+    # Sestavení URL pro každou sekci
     section_url = url + link
-    # Fetch the webpage of the section
-    section_page = session.get(section_url)
-    # Find all h2 elements, assuming these are the course names
-    for title in section_page.html.find(".styles_banner__p1HlQ h2"):
-        # Print the text of each h2 element, which is the course name
+    print(section_url)
+    # Načtení webové stránky sekce
+    section_response = session.get(section_url)
+    # Vytvoření instance BeautifulSoup pro stránku sekce
+    section_soup = BeautifulSoup(section_response.text, 'html.parser')
+    # Hledání všech h2 elementů, předpokládá se, že tyto obsahují názvy kurzů
+    titles = section_soup.select("h2")
+    for title in titles:
+        # Vypsání textu každého h2 elementu, což je název lekce
         print(title.text)
 
-# Close the session
+# Uzavření session
 session.close()
